@@ -1,0 +1,10 @@
+2024-08-06 11:42:53 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ./testMessageBox program running
+2024-08-06 11:42:53 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-08-06 11:42:53 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00008
+2024-08-06 11:42:53 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:memory number check fail
+2024-08-06 11:42:53 INFO [root] [testMessageBox.py (run_start:100)] -- ./testMessageBox program is running, wait for the operator to confirm the screen information
+2024-08-07 10:01:08 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ./testMessageBox program running
+2024-08-07 10:01:08 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-08-07 10:01:08 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-08-07 10:01:08 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:battery capacity check fail
+2024-08-07 10:01:08 INFO [root] [testMessageBox.py (run_start:100)] -- ./testMessageBox program is running, wait for the operator to confirm the screen information

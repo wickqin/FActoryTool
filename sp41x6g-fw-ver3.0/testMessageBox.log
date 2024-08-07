@@ -1,0 +1,65 @@
+2024-04-28 19:31:06 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-04-28 19:31:06 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-04-28 19:31:06 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-04-28 19:31:06 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:ec check fail
+2024-04-28 19:31:06 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-04-29 18:30:39 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-04-29 18:30:39 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-04-29 18:30:39 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-04-29 18:30:39 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:ec check fail
+2024-04-29 18:30:39 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-07-09 16:09:16 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-07-09 16:09:16 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-07-09 16:09:16 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-07-09 16:09:16 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:ec check fail
+2024-07-09 16:09:16 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-07-12 14:26:50 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-07-12 14:26:50 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-07-12 14:26:50 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-07-12 14:26:50 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:PD_FW check fail
+2024-07-12 14:26:50 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-07-12 14:27:39 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-07-12 14:27:39 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-07-12 14:27:39 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-07-12 14:27:39 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:PD_FW check fail
+2024-07-12 14:27:39 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-07-12 14:33:29 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-07-12 14:33:29 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-07-12 14:33:29 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-07-12 14:33:29 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:PD_FW check fail
+2024-07-12 14:33:29 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-07-21 10:03:41 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-07-21 10:03:41 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-07-21 10:03:41 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-07-21 10:03:41 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:ec check fail
+2024-07-21 10:03:41 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-07-21 10:04:27 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-07-21 10:04:27 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-07-21 10:04:27 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-07-21 10:04:27 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:ec check fail
+2024-07-21 10:04:27 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-07-22 08:28:50 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-07-22 08:28:50 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-07-22 08:28:50 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-07-22 08:28:50 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:ec check fail
+2024-07-22 08:28:50 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2023-08-16 10:06:26 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2023-08-16 10:06:26 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2023-08-16 10:06:26 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2023-08-16 10:06:26 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:ec check fail
+2023-08-16 10:06:26 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-08-06 18:48:04 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-08-06 18:48:04 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-08-06 18:48:04 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-08-06 18:48:04 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:PD_FW check fail
+2024-08-06 18:48:04 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-08-07 08:46:02 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-08-07 08:46:02 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-08-07 08:46:02 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-08-07 08:46:02 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:PD_FW check fail
+2024-08-07 08:46:02 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-08-07 08:51:21 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-08-07 08:51:21 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-08-07 08:51:21 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
+2024-08-07 08:51:21 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:PD_FW check fail
+2024-08-07 08:51:21 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information

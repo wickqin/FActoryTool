@@ -1,0 +1,15 @@
+2024-04-15 10:35:38 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-04-15 10:35:38 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-04-15 10:35:38 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00160
+2024-04-15 10:35:38 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:未检测到风扇
+2024-04-15 10:35:38 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-04-15 10:36:26 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-04-15 10:36:26 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-04-15 10:36:26 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00160
+2024-04-15 10:36:26 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:未检测到风扇
+2024-04-15 10:36:26 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information
+2024-04-15 10:37:03 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ../testMessageBox program running
+2024-04-15 10:37:03 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-04-15 10:37:03 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00160
+2024-04-15 10:37:03 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:未检测到风扇
+2024-04-15 10:37:03 INFO [root] [testMessageBox.py (run_start:100)] -- ../testMessageBox program is running, wait for the operator to confirm the screen information

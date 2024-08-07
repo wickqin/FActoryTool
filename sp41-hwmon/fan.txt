@@ -1,0 +1,4 @@
+CPU temperature      = 40
+ACPI TZ temperature  = 40
+Speed of the fan     = 2430
+

@@ -1,0 +1,9 @@
+1. sp41x6g-fw-ver 需要访问 : /sys/kernel/debug/ec/ec0/io，所以必须安装 ec-sys 驱动
+   a) 如果操作系统是统信，请先安装 ec-sys-uos-1060-{$VERSION}.deb
+   b) 如果操作系统是麒麟，请先安装 ec-sys-kylin-{$VERSION}.deb
+
+2. 编译 : 执行 make
+
+3. 执行 : sudo ./sp41x6g-fw-ver
+
+4. 注意 : 此 Demo code 仅用于 SP41X6G 机台。
