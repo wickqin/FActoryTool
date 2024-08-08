@@ -15,7 +15,8 @@ class MainWindow(QMainWindow):
 
         self.current_test_index = 0
         self.test_commands = [
-            {"name": "Scan SN", "command": "./settime.sh", "result": True, "TestCont": 0},
+            {"name": "Scan SN", "command": "./ScanSN.sh", "result": True, "TestCont": 0},
+            {"name": "SN Check", "command": "./CheckSN.sh"},
             {"name": "CPU Check", "command": "./cpu.sh"},
             {"name": "DIMM Check", "command": "./DDRchk.sh"},
             {"name": "BIOS Check", "command": "./BIOSchk.sh"},
@@ -26,8 +27,8 @@ class MainWindow(QMainWindow):
             {"name": "BlueTooth Test", "command": "./BlueTooth.sh"},
             {"name": "WIFI Test", "command": "./WIFITest.sh"},
             {"name": "Battery Test", "command": "./Battery.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
+            {"name": "SDCard Test", "command": "./CardTest.sh"},
+            {"name": "Camera Test", "command": "./CameraTest.sh"},
             {"name": "WIFI Test", "command": "./wifitest.sh"},
             {"name": "WIFI Test", "command": "./wifitest.sh"},
             {"name": "WIFI Test", "command": "./wifitest.sh"},
@@ -61,6 +62,9 @@ class MainWindow(QMainWindow):
             selected_index = selected_indexes[0].row()
             test = self.test_commands[selected_index]
             self.run_test(test)
+        else:
+            print(selected_indexes)
+            pass
 
     def run_test(self, test):
         self.log(f"Starting {test['name']}...")
@@ -94,6 +98,7 @@ class MainWindow(QMainWindow):
         try:
             result = subprocess.run(command, shell=True, capture_output=True, text=True)
             if result.returncode == 0:
+                # self.ui.test_listView.itemDelegateForRow()
                 self.log(f"{command} PASSED")
                 return True
             else:

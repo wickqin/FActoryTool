@@ -8,3 +8,13 @@
 2024-08-07 10:01:08 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00075
 2024-08-07 10:01:08 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:battery capacity check fail
 2024-08-07 10:01:08 INFO [root] [testMessageBox.py (run_start:100)] -- ./testMessageBox program is running, wait for the operator to confirm the screen information
+2024-08-07 15:50:36 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ./testMessageBox program running
+2024-08-07 15:50:36 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-08-07 15:50:36 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00051
+2024-08-07 15:50:36 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:check card reader fail
+2024-08-07 15:50:36 INFO [root] [testMessageBox.py (run_start:100)] -- ./testMessageBox program is running, wait for the operator to confirm the screen information
+2024-08-07 16:36:34 INFO [root] [testMessageBox.py (main:501)] -- start to get parameter for ./testMessageBox program running
+2024-08-07 16:36:34 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -FAIL
+2024-08-07 16:36:34 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -E:T00051
+2024-08-07 16:36:34 INFO [root] [testMessageBox.py (main:508)] -- Parameter - -S:check card reader fail
+2024-08-07 16:36:34 INFO [root] [testMessageBox.py (run_start:100)] -- ./testMessageBox program is running, wait for the operator to confirm the screen information
