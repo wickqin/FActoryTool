@@ -58,7 +58,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.sn_label.setFont(font)
-        self.sn_label.setObjectName("sn_label")
+        self.sn_label.setObjectName("fx_label")
         self.gridLayout.addWidget(self.sn_label, 4, 0, 1, 1)
         self.product_label = QtWidgets.QLabel(self.centralwidget)
         font = QtGui.QFont()
