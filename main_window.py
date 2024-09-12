@@ -7,7 +7,7 @@ from PyQt5.QtGui import QKeySequence
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFrame, QAction, QShortcut, QWidget, QMessageBox
 from PyQt5 import QtGui
 from main_ui import Ui_MainWindow
-from setting_ui import Ui_Setting
+from setting_ui import Ui_setting
 import sys
 
 
@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
+        self.top = SettingWindow(self)
         self.current_test_index = 0
         self.test_commands = [
             {"name": "Scan SN", "command": "./ScanSN.sh", "result": True, "TestCont": 0},
@@ -53,7 +53,6 @@ class MainWindow(QMainWindow):
         self.bind('F10', self.on_setting)
 
     def bind(self, key, func):
-        self.top = SettingWindow(self)
         shortcut = QShortcut(QtGui.QKeySequence(key), self)  # Bind F10 key
         shortcut.activated.connect(func)
 
@@ -61,6 +60,8 @@ class MainWindow(QMainWindow):
         if not hasattr(self, 'top') or not self.top.isVisible():
             self.top.setWindowModality(False)
             self.top.show()
+        else:
+            self.top.hide()
 
     def update_listview_item(self, test_name, passed):
         for index in range(self.ui.test_listView.count()):
@@ -148,7 +149,7 @@ def alert(msg_type, msg):
 class SettingWindow(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setting_ui = Ui_Setting()
+        self.setting_ui = Ui_setting()
         self.setting_ui.setupUi(self)
         self.file_name = "./TestInfo.dat"
         self.initData = {}
