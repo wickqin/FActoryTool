@@ -37,6 +37,7 @@ class MainWindow(QMainWindow):
             {"name": "Check Fan Test", "command": "./CheckFan.sh"},
             {"name": "BlueTooth Test", "command": "./BlueTooth.sh"},
             {"name": "WIFI Test", "command": "./WIFITest.sh"},
+            {"name": "Keyboard Test", "command": "cd ./KBTest&&./kb.sh"},
             {"name": "Battery Test", "command": "./Battery.sh"},
             {"name": "SDCard Test", "command": "./CardTest.sh"},
             {"name": "Camera Test", "command": "./CameraTest.sh"},
@@ -51,7 +52,7 @@ class MainWindow(QMainWindow):
         self.ui.reset_test_button.clicked.connect(self.run_selected_test)
         self.ui.start_test_button.clicked.connect(self.start_all_tests)
         self.bind('F10', self.on_setting)
-
+        self.update_ui()
         self.timer = QTimer(self)
         self.update_test_list()
 
@@ -63,7 +64,6 @@ class MainWindow(QMainWindow):
         if not os.path.exists(MainWindow.FILE_NAME):
             print("文件名为空或非法")
             return
-
         if not hasattr(self, 'top') or self.top is None:
             self.top = SettingWindow(self.initData, MainWindow.FILE_NAME)
         self.show_or_hide_window(self.top)
@@ -74,6 +74,7 @@ class MainWindow(QMainWindow):
         else:
             window.setWindowModality(Qt.WindowModal)
             self.init_info(MainWindow.FILE_NAME)
+            window.update_settings(self.initData)
             window.show()
 
     def init_info(self, file_name):
@@ -98,6 +99,12 @@ class MainWindow(QMainWindow):
                     file.write(f"{key}:{value}\n")
         except Exception as e:
             print(f"Error saving file: {e}")
+
+    def update_ui(self):
+        self.ui.psLabel.setText(f'工号：{self.initData.get("Personal ID", "")}')
+        self.ui.lineLabel.setText(f'线别：{self.initData.get("Line", "")}')
+        self.ui.fxLabel.setText(f'站位：{self.initData.get("Fixture ID", "")}')
+        self.ui.pnLabel.setText(f'料号：{self.initData.get("PN", "")}')
 
     def update_listview_item(self, test_name, passed):
         for index in range(self.ui.test_listView.count()):
@@ -137,10 +144,15 @@ class MainWindow(QMainWindow):
         self.ui.textBrowser.append(message)
 
     def start_all_tests(self):
-        self.ui.test_progressBar.setValue(0)
-        self.current_test_index = 0
-        self.timer.timeout.connect(self.run_next_test)
-        self.timer.start(100)
+        sn = self.ui.snEdit.text().strip().upper()
+        if sn != "" and len(sn) == 15:
+            self.ui.snEdit.setDisabled(True)
+            self.ui.test_progressBar.setValue(0)
+            self.current_test_index = 0
+            self.timer.timeout.connect(self.run_next_test)
+            self.timer.start(100)
+        else:
+            alert("Warning", "请检查SN输入")
 
     @pyqtSlot()
     def run_next_test(self):
@@ -149,12 +161,9 @@ class MainWindow(QMainWindow):
             self.run_test(test)
             self.current_test_index += 1
             progress = (self.current_test_index / len(self.test_commands)) * 100
-            print(f"progress---------{progress}")
             self.ui.test_progressBar.setValue(progress)
-            # QtCore.QTimer.singleShot(100, self.run_next_test)  # Run the next test after 100 ms
         else:
             self.timer.stop()
-            # QtWidgets.QMessageBox.information(None, "Test Complete", "All tests are complete.")
 
     def run_command(self, command):
         try:
@@ -200,6 +209,13 @@ class SettingWindow(QDialog):
         self.file_name = file_name
         self.setting_ui.okButton.clicked.connect(self.saveGeometry)
         self.setting_ui.cancelButton.clicked.connect(self.close)
+        self.update_ui()
+
+    def update_settings(self, new_data):
+        self.initData = new_data
+        self.update_ui()
+
+    def update_ui(self):
         self.setting_ui.psEdit.setText(self.initData.get("Personal ID", ""))
         self.setting_ui.lineEdit.setText(self.initData.get("Line", ""))
         self.setting_ui.fxEdit.setText(self.initData.get("Fixture ID", ""))
