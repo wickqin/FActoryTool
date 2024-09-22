@@ -224,8 +224,6 @@ class SettingWindow(QDialog):
             alert("Error", f"文件写入失败: {e}")
 
 
-
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     mainWindow = MainWindow()
