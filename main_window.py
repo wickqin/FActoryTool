@@ -17,13 +17,13 @@ class MainWindow(QMainWindow):
         "Fixture ID": "",
         "PN": ""
     }
+    INIT_DATA = {}
 
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.initData = {}
         self.current_test_index = 0
         self.test_commands = [
             {"name": "Scan SN", "command": "./ScanSN.sh", "result": True, "TestCont": 0},
@@ -47,7 +47,7 @@ class MainWindow(QMainWindow):
 
         self.init_info(MainWindow.FILE_NAME)
 
-        self.top = SettingWindow(self.initData, MainWindow.FILE_NAME)
+        self.top = SettingWindow(MainWindow.INIT_DATA, MainWindow.FILE_NAME)
 
         self.ui.reset_test_button.clicked.connect(self.run_selected_test)
         self.ui.start_test_button.clicked.connect(self.start_all_tests)
@@ -65,7 +65,7 @@ class MainWindow(QMainWindow):
             print("文件名为空或非法")
             return
         if not hasattr(self, 'top') or self.top is None:
-            self.top = SettingWindow(self.initData, MainWindow.FILE_NAME)
+            self.top = SettingWindow(MainWindow.INIT_DATA, MainWindow.FILE_NAME)
         self.show_or_hide_window(self.top)
 
     def show_or_hide_window(self, window):
@@ -74,7 +74,7 @@ class MainWindow(QMainWindow):
         else:
             window.setWindowModality(Qt.WindowModal)
             self.init_info(MainWindow.FILE_NAME)
-            window.update_settings(self.initData)
+            window.update_settings(MainWindow.INIT_DATA)
             window.show()
 
     def init_info(self, file_name):
@@ -85,26 +85,26 @@ class MainWindow(QMainWindow):
                         key_value = line.strip().split(':')
                         if len(key_value) == 2:
                             key, value = map(str.strip, key_value)
-                            self.initData[key] = value
+                            MainWindow.INIT_DATA[key] = value
             except Exception as e:
                 print(f"Error reading file: {e}")
         else:
-            self.initData = MainWindow.INIT_DATA_TEMPLATE.copy()
+            MainWindow.INIT_DATA = MainWindow.INIT_DATA_TEMPLATE.copy()
             self.save_info_to_file(file_name)
 
     def save_info_to_file(self, file_name):
         try:
             with open(file_name, 'w') as file:
-                for key, value in self.initData.items():
+                for key, value in MainWindow.INIT_DATA.items():
                     file.write(f"{key}:{value}\n")
         except Exception as e:
             print(f"Error saving file: {e}")
 
     def update_ui(self):
-        self.ui.psLabel.setText(f'工号：{self.initData.get("Personal ID", "")}')
-        self.ui.lineLabel.setText(f'线别：{self.initData.get("Line", "")}')
-        self.ui.fxLabel.setText(f'站位：{self.initData.get("Fixture ID", "")}')
-        self.ui.pnLabel.setText(f'料号：{self.initData.get("PN", "")}')
+        self.ui.psLabel.setText(f'工号：{MainWindow.INIT_DATA.get("Personal ID", "")}')
+        self.ui.lineLabel.setText(f'线别：{MainWindow.INIT_DATA.get("Line", "")}')
+        self.ui.fxLabel.setText(f'站位：{MainWindow.INIT_DATA.get("Fixture ID", "")}')
+        self.ui.pnLabel.setText(f'料号：{MainWindow.INIT_DATA.get("PN", "")}')
 
     def update_listview_item(self, test_name, passed):
         for index in range(self.ui.test_listView.count()):
@@ -233,6 +233,8 @@ class SettingWindow(QDialog):
                 if not check_input_length(line_edit, key, length):
                     return
                 self.initData[key] = line_edit.text().strip().upper()
+                MainWindow.INIT_DATA = self.initData
+                mainWindow.update_ui()
         try:
             with open(self.file_name, 'w') as f:
                 for key, value in self.initData.items():
