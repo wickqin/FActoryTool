@@ -1,7 +1,7 @@
 import os
 import sys
 from PyQt5.QtWidgets import QApplication, QMessageBox, QWidget
-from setting import Ui_setting
+from setting import Ui_Form
 
 
 def entryIsEmpty(lineEdit):
@@ -15,28 +15,36 @@ def alert(msg_type, msg):
     QMessageBox.warning(None, msg_type, msg)
 
 
+def cancel():
+    sys.exit(1)
+
+
 class SettingWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setting_ui = Ui_setting()
+        self.setting_ui = Ui_Form()
         self.setting_ui.setupUi(self)
+        self.setTabOrder(self.setting_ui.psEdit, self.setting_ui.lineEdit)
+        self.setTabOrder(self.setting_ui.lineEdit, self.setting_ui.fxEdit)
+        self.setTabOrder(self.setting_ui.fxEdit, self.setting_ui.pnEdit)
+        self.setTabOrder(self.setting_ui.pnEdit, self.setting_ui.okButton)
         self.file_name = "TestInfo.dat"
         self.initData = {}
-        self.setting_ui.ok_bt.clicked.connect(self.saveGeometry)
-        self.setting_ui.cancel_bt.clicked.connect(self.close)
+        self.setting_ui.okButton.clicked.connect(self.saveGeometry)
+        self.setting_ui.cancelButton.clicked.connect(self.close)
         self.init_info(self.file_name)
 
-        self.setting_ui.ps_lineEdit.setText(self.initData.get("Personal ID", ""))
-        self.setting_ui.line_lineEdit.setText(self.initData.get("Line", ""))
-        self.setting_ui.fx_lineEdit.setText(self.initData.get("Fixture ID", ""))
-        self.setting_ui.pn_lineEdit.setText(self.initData.get("PN", ""))
+        self.setting_ui.psEdit.setText(self.initData.get("Personal ID", ""))
+        self.setting_ui.lineEdit.setText(self.initData.get("Line", ""))
+        self.setting_ui.fxEdit.setText(self.initData.get("Fixture ID", ""))
+        self.setting_ui.pnEdit.setText(self.initData.get("PN", ""))
 
     def saveGeometry(self):
         controls_to_check = [
-            (self.setting_ui.ps_lineEdit, "Personal ID"),
-            (self.setting_ui.line_lineEdit, "Line"),
-            (self.setting_ui.fx_lineEdit, "Fixture ID"),
-            (self.setting_ui.pn_lineEdit, "PN")
+            (self.setting_ui.psEdit, "Personal ID"),
+            (self.setting_ui.lineEdit, "Line"),
+            (self.setting_ui.fxEdit, "Fixture ID"),
+            (self.setting_ui.pnEdit, "PN")
         ]
         for line_edit, key in controls_to_check:
             if entryIsEmpty(line_edit):

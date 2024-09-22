@@ -1,13 +1,11 @@
 import os
 import subprocess
-from linecache import cache
 
 from PyQt5.QtCore import QTimer, pyqtSlot, Qt
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFrame, QAction, QShortcut, QWidget, QMessageBox
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFrame, QAction, QShortcut, QWidget, QMessageBox, QDialog
 from PyQt5 import QtGui
 from main_ui import Ui_MainWindow
-from setting_ui import Ui_setting
+from setting import Ui_Form
 import sys
 
 
@@ -46,6 +44,9 @@ class MainWindow(QMainWindow):
             {"name": "WIFI Test", "command": "./wifitest.sh"},
             # Add more tests here
         ]
+        self.file_name = "./TestInfo.dat"
+        self.initData = {}
+        self.init_info(self.file_name)
         self.timer = QTimer(self)
         self.ui.reset_test_button.clicked.connect(self.run_selected_test)
         self.ui.start_test_button.clicked.connect(self.start_all_tests)
@@ -57,11 +58,45 @@ class MainWindow(QMainWindow):
         shortcut.activated.connect(func)
 
     def on_setting(self):
-        if not hasattr(self, 'top') or not self.top.isVisible():
-            self.top.setWindowModality(False)
-            self.top.show()
+        if not self.file_name:
+            print("文件名为空或非法")
+            return
+
+        if os.path.exists(self.file_name):
+            if not hasattr(self, 'top') or self.top is None:
+                self.top = SettingWindow(self)
+            if not self.top.isVisible():
+                self.top.setWindowModality(Qt.WindowModal)
+                self.top.show()
+            else:
+                self.top.hide()
         else:
-            self.top.hide()
+            if not hasattr(self, 'top') or self.top is None:
+                self.top = SettingWindow(self)
+            self.top.show()
+
+    def init_info(self, file_name):
+        try:
+            if os.path.exists(file_name):
+                with open(file_name, "r") as file:
+                    for line in file:
+                        key_value = line.strip().split(':')
+                        if len(key_value) == 2:
+                            key = key_value[0].strip()
+                            value = key_value[1].strip()
+                            self.initData[key] = value
+            else:
+                with open(file_name, 'w') as f:
+                    self.initData = {
+                        "Personal ID": "",
+                        "Line": "",
+                        "Fixture ID": "",
+                        "PN": ""
+                    }
+                    for key, value in self.initData.items():
+                        f.write(f"{key}:{value}\n")
+        except Exception as e:
+            print(f"Error reading file: {e}")
 
     def update_listview_item(self, test_name, passed):
         for index in range(self.ui.test_listView.count()):
@@ -137,63 +172,58 @@ class MainWindow(QMainWindow):
 
 def entryIsEmpty(lineEdit):
     if lineEdit.text().strip() == "":
-        return True
-    else:
         return False
+    else:
+        return True
 
 
 def alert(msg_type, msg):
     QMessageBox.warning(None, msg_type, msg)
 
 
-class SettingWindow(QWidget):
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.setting_ui = Ui_setting()
-        self.setting_ui.setupUi(self)
-        self.file_name = "./TestInfo.dat"
-        self.initData = {}
-        self.setting_ui.ok_bt.clicked.connect(self.saveGeometry)
-        self.setting_ui.cancel_bt.clicked.connect(self.close)
-        self.init_info(self.file_name)
+def check_input_length(line_edit, key, expected_length):
+    value = line_edit.text().strip()
+    if len(value) != expected_length:
+        alert("Warning", f"请检查{key}输入")
+        line_edit.setFocus()
+        return False
+    return True
 
-        self.setting_ui.ps_lineEdit.setText(self.initData.get("Personal ID", ""))
-        self.setting_ui.line_lineEdit.setText(self.initData.get("Line", ""))
-        self.setting_ui.fx_lineEdit.setText(self.initData.get("Fixture ID", ""))
-        self.setting_ui.pn_lineEdit.setText(self.initData.get("PN", ""))
+
+class SettingWindow(QDialog):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.setting_ui = Ui_Form()
+        self.setting_ui.setupUi(self)
+        self.initData = parent.initData
+        self.setting_ui.okButton.clicked.connect(self.saveGeometry)
+        self.setting_ui.cancelButton.clicked.connect(self.close)
+        self.setting_ui.psEdit.setText(self.initData.get("Personal ID", ""))
+        self.setting_ui.lineEdit.setText(self.initData.get("Line", ""))
+        self.setting_ui.fxEdit.setText(self.initData.get("Fixture ID", ""))
+        self.setting_ui.pnEdit.setText(self.initData.get("PN", ""))
 
     def saveGeometry(self):
-        if entryIsEmpty(self.setting_ui.ps_lineEdit):
-            alert("Warning", "Please enter Personal ID")
-        elif entryIsEmpty(self.setting_ui.line_lineEdit):
-            alert("Warning", "Please enter Line")
-        elif entryIsEmpty(self.setting_ui.fx_lineEdit):
-            alert("Warning", "Please enter Fixture ID")
-        elif entryIsEmpty(self.setting_ui.pn_lineEdit):
-            alert("Warning", "Please enter PN")
-
-    def init_info(self, file_name):
+        controls_to_check = [
+            (self.setting_ui.psEdit, "Personal ID", 7),
+            (self.setting_ui.lineEdit, "Line", 10),
+            (self.setting_ui.fxEdit, "Fixture ID", 6),
+            (self.setting_ui.pnEdit, "PN", 13)
+        ]
+        for line_edit, key, length in controls_to_check:
+            if entryIsEmpty(line_edit):
+                if not check_input_length(line_edit, key, length):
+                    return
+                self.initData[key] = line_edit.text().strip().upper()
         try:
-            if os.path.exists(file_name):
-                with open(file_name, "r") as file:
-                    for line in file:
-                        key_value = line.strip().split(':')
-                        if len(key_value) == 2:
-                            key = key_value[0].strip()
-                            value = key_value[1].strip()
-                            self.initData[key] = value
-            else:
-                with open(file_name, 'w') as f:
-                    self.initData = {
-                        "Personal ID": "",
-                        "Line": "",
-                        "Fixture ID": "",
-                        "PN": ""
-                    }
-                    for key, value in self.initData.items():
-                        f.write(f"{key}:{value}\n")
+            with open(self.file_name, 'w') as f:
+                for key, value in self.initData.items():
+                    f.write(f"{key}:{value}\n")
+            self.close()
         except Exception as e:
-            print(f"Error reading file: {e}")
+            alert("Error", f"文件写入失败: {e}")
+
+
 
 
 if __name__ == '__main__':
