@@ -10,11 +10,20 @@ import sys
 
 
 class MainWindow(QMainWindow):
+    FILE_NAME = "./TestInfo.dat"
+    INIT_DATA_TEMPLATE = {
+        "Personal ID": "",
+        "Line": "",
+        "Fixture ID": "",
+        "PN": ""
+    }
+
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.top = SettingWindow(self)
+
+        self.initData = {}
         self.current_test_index = 0
         self.test_commands = [
             {"name": "Scan SN", "command": "./ScanSN.sh", "result": True, "TestCont": 0},
@@ -32,71 +41,63 @@ class MainWindow(QMainWindow):
             {"name": "SDCard Test", "command": "./CardTest.sh"},
             {"name": "Camera Test", "command": "./CameraTest.sh"},
             {"name": "HDMI Test", "command": "./color.py"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"},
-            # Add more tests here
+            {"name": "WIFI Test", "command": "./wifitest.sh"}
         ]
-        self.file_name = "./TestInfo.dat"
-        self.initData = {}
-        self.init_info(self.file_name)
-        self.timer = QTimer(self)
+
+        self.init_info(MainWindow.FILE_NAME)
+
+        self.top = SettingWindow(self.initData, MainWindow.FILE_NAME)
+
         self.ui.reset_test_button.clicked.connect(self.run_selected_test)
         self.ui.start_test_button.clicked.connect(self.start_all_tests)
-        self.update_test_list()
         self.bind('F10', self.on_setting)
 
+        self.timer = QTimer(self)
+        self.update_test_list()
+
     def bind(self, key, func):
-        shortcut = QShortcut(QtGui.QKeySequence(key), self)  # Bind F10 key
+        shortcut = QShortcut(QtGui.QKeySequence(key), self)
         shortcut.activated.connect(func)
 
     def on_setting(self):
-        if not self.file_name:
+        if not os.path.exists(MainWindow.FILE_NAME):
             print("文件名为空或非法")
             return
 
-        if os.path.exists(self.file_name):
-            if not hasattr(self, 'top') or self.top is None:
-                self.top = SettingWindow(self)
-            if not self.top.isVisible():
-                self.top.setWindowModality(Qt.WindowModal)
-                self.top.show()
-            else:
-                self.top.hide()
+        if not hasattr(self, 'top') or self.top is None:
+            self.top = SettingWindow(self.initData, MainWindow.FILE_NAME)
+        self.show_or_hide_window(self.top)
+
+    def show_or_hide_window(self, window):
+        if window.isVisible():
+            window.hide()
         else:
-            if not hasattr(self, 'top') or self.top is None:
-                self.top = SettingWindow(self)
-            self.top.show()
+            window.setWindowModality(Qt.WindowModal)
+            self.init_info(MainWindow.FILE_NAME)
+            window.show()
 
     def init_info(self, file_name):
-        try:
-            if os.path.exists(file_name):
+        if os.path.exists(file_name):
+            try:
                 with open(file_name, "r") as file:
                     for line in file:
                         key_value = line.strip().split(':')
                         if len(key_value) == 2:
-                            key = key_value[0].strip()
-                            value = key_value[1].strip()
+                            key, value = map(str.strip, key_value)
                             self.initData[key] = value
-            else:
-                with open(file_name, 'w') as f:
-                    self.initData = {
-                        "Personal ID": "",
-                        "Line": "",
-                        "Fixture ID": "",
-                        "PN": ""
-                    }
-                    for key, value in self.initData.items():
-                        f.write(f"{key}:{value}\n")
+            except Exception as e:
+                print(f"Error reading file: {e}")
+        else:
+            self.initData = MainWindow.INIT_DATA_TEMPLATE.copy()
+            self.save_info_to_file(file_name)
+
+    def save_info_to_file(self, file_name):
+        try:
+            with open(file_name, 'w') as file:
+                for key, value in self.initData.items():
+                    file.write(f"{key}:{value}\n")
         except Exception as e:
-            print(f"Error reading file: {e}")
+            print(f"Error saving file: {e}")
 
     def update_listview_item(self, test_name, passed):
         for index in range(self.ui.test_listView.count()):
@@ -191,11 +192,12 @@ def check_input_length(line_edit, key, expected_length):
 
 
 class SettingWindow(QDialog):
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, initData, file_name):
+        super().__init__()
         self.setting_ui = Ui_Form()
         self.setting_ui.setupUi(self)
-        self.initData = parent.initData
+        self.initData = initData
+        self.file_name = file_name
         self.setting_ui.okButton.clicked.connect(self.saveGeometry)
         self.setting_ui.cancelButton.clicked.connect(self.close)
         self.setting_ui.psEdit.setText(self.initData.get("Personal ID", ""))
@@ -206,8 +208,8 @@ class SettingWindow(QDialog):
     def saveGeometry(self):
         controls_to_check = [
             (self.setting_ui.psEdit, "Personal ID", 7),
-            (self.setting_ui.lineEdit, "Line", 10),
-            (self.setting_ui.fxEdit, "Fixture ID", 6),
+            (self.setting_ui.lineEdit, "Line", 6),
+            (self.setting_ui.fxEdit, "Fixture ID", 10),
             (self.setting_ui.pnEdit, "PN", 13)
         ]
         for line_edit, key, length in controls_to_check:

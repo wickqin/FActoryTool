@@ -72,7 +72,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit">
+      <widget class="QLineEdit" name="fxEdit">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -201,7 +201,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="fxEdit">
+      <widget class="QLineEdit" name="lineEdit">
        <property name="focusPolicy">
         <enum>Qt::StrongFocus</enum>
        </property>
@@ -216,8 +216,8 @@
  </widget>
  <tabstops>
   <tabstop>psEdit</tabstop>
-  <tabstop>fxEdit</tabstop>
   <tabstop>lineEdit</tabstop>
+  <tabstop>fxEdit</tabstop>
   <tabstop>pnEdit</tabstop>
   <tabstop>okButton</tabstop>
   <tabstop>cancelButton</tabstop>
