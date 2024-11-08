@@ -43,6 +43,12 @@ def main_loop(screen, colors):
                         f.write('filed')
                     pygame.quit()
                     sys.exit(1)
+                elif event.key == pygame.K_RETURN or event.keycode == 13:
+                    current_color_index = (current_color_index + 1) % len(colors)
+                    if current_color_index == 1:
+                        screen.fill(colors[current_color_index])
+                        deeper_color = get_deeper_color(colors[current_color_index])
+                        block_rect = random_block(screen, screen.get_width(), screen.get_height(), deeper_color)
             elif event.type == pygame.MOUSEBUTTONDOWN and block_rect and block_rect.collidepoint(event.pos):
                 current_color_index = (current_color_index + 1) % len(colors)
                 if current_color_index == 0:

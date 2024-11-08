@@ -1,8 +1,10 @@
 import os
 import subprocess
 
-from PyQt5.QtCore import QTimer, pyqtSlot, Qt
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFrame, QAction, QShortcut, QWidget, QMessageBox, QDialog
+from PyQt5.QtCore import QTimer, pyqtSlot, Qt, QSize
+from PyQt5.QtGui import QStandardItem, QFont
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFrame, QAction, QShortcut, QWidget, QMessageBox, QDialog, \
+    QHBoxLayout, QListWidgetItem, QLabel, QSizePolicy, QStyledItemDelegate
 from PyQt5 import QtGui
 from main_ui import Ui_MainWindow
 from setting import Ui_Form
@@ -26,23 +28,24 @@ class MainWindow(QMainWindow):
 
         self.current_test_index = 0
         self.test_commands = [
-            {"name": "Scan SN", "command": "./ScanSN.sh", "result": True, "TestCont": 0},
-            {"name": "SN Check", "command": "./CheckSN.sh"},
-            {"name": "CPU Check", "command": "./cpu.sh"},
-            {"name": "DIMM Check", "command": "./DDRchk.sh"},
-            {"name": "BIOS Check", "command": "./BIOSchk.sh"},
-            {"name": "Touchpad Test", "command": "./touchpad.sh"},
-            {"name": "Check EC Test", "command": "cd ./sp41x6g-fw-ver3.0&&./CheckEC.sh"},
-            {"name": "Check PD_FW Test", "command": "cd ./sp41x6g-fw-ver3.0&&./CheckPD_FW.sh"},
-            {"name": "Check Fan Test", "command": "./CheckFan.sh"},
-            {"name": "BlueTooth Test", "command": "./BlueTooth.sh"},
-            {"name": "WIFI Test", "command": "./WIFITest.sh"},
-            {"name": "Keyboard Test", "command": "cd ./KBTest&&./kb.sh"},
-            {"name": "Battery Test", "command": "./Battery.sh"},
-            {"name": "SDCard Test", "command": "./CardTest.sh"},
-            {"name": "Camera Test", "command": "./CameraTest.sh"},
-            {"name": "HDMI Test", "command": "./color.py"},
-            {"name": "WIFI Test", "command": "./wifitest.sh"}
+            {"name": "Scan SN", "command": "./ScanSN.sh", "result": True, "cont": 0},
+            {"name": "SN Check", "command": "./CheckSN.sh", "result": True, "cont": 0},
+            {"name": "CPU Check", "command": "./cpu.sh", "result": True, "cont": 0},
+            {"name": "DIMM Check", "command": "./DDRchk.sh", "result": True, "cont": 0},
+            {"name": "BIOS Check", "command": "./BIOSchk.sh", "result": True, "cont": 0},
+            {"name": "Touchpad Test", "command": "./touchpad.sh", "result": True, "cont": 0},
+            {"name": "Check EC Test", "command": "cd ./sp41x6g-fw-ver3.0&&./CheckEC.sh", "result": True, "cont": 0},
+            {"name": "Check PD_FW Test", "command": "cd ./sp41x6g-fw-ver3.0&&./CheckPD_FW.sh", "result": True,
+             "cont": 0},
+            {"name": "Check Fan Test", "command": "./CheckFan.sh", "result": True, "cont": 0},
+            {"name": "BlueTooth Test", "command": "./BlueTooth.sh", "result": True, "cont": 0},
+            {"name": "WIFI Test", "command": "./WIFITest.sh", "result": True, "cont": 0},
+            {"name": "Keyboard Test", "command": "cd ./KBTest&&./kb.sh", "result": True, "cont": 0},
+            {"name": "Battery Test", "command": "./Battery.sh", "result": True, "cont": 0},
+            {"name": "SDCard Test", "command": "./CardTest.sh", "result": True, "cont": 0},
+            {"name": "Camera Test", "command": "./CameraTest.sh", "result": True, "cont": 0},
+            {"name": "HDMI Test", "command": "./color.py", "result": True, "cont": 0},
+            {"name": "WIFI Test", "command": "./wifitest.sh", "result": True, "cont": 0}
         ]
 
         self.init_info(MainWindow.FILE_NAME)
@@ -116,13 +119,56 @@ class MainWindow(QMainWindow):
                     item.setBackground(QtGui.QColor("red"))
                 break
 
+    def item_wight(self, item):
+        name = item['name']
+        command = item['command']
+        cont = str(item['cont'])
+        result = 'Pass' if item['result'] else 'Fail'
+
+        parent_item = QStandardItem()
+        parent_item.setSizeHint(QSize(400, 30))
+
+        name_item = QStandardItem()
+        name_item.setTextAlignment(Qt.AlignCenter)
+        name_item.setText(name)
+        name_item.setBackground(Qt.GlobalColor.black)
+        command_item = QStandardItem()
+        command_item.setTextAlignment(Qt.AlignCenter)
+        command_item.setText(command)
+        cont_item = QStandardItem()
+        cont_item.setTextAlignment(Qt.AlignCenter)
+        cont_item.setText(cont)
+        result_item = QStandardItem()
+        result_item.setTextAlignment(Qt.AlignCenter)
+        result_item.setText(result)
+
+        parent_item.appendRow(name_item)
+        parent_item.appendRow(command_item)
+        parent_item.appendRow(cont_item)
+        parent_item.appendRow(result_item)
+
+        return parent_item
+
     def update_test_list(self):
         model = QtGui.QStandardItemModel()
         for test in self.test_commands:
-            item = QtGui.QStandardItem(test["name"])
+            item = self.item_wight(test)
             item.setEditable(False)
+            item.setFont(QFont("Arial", 10))
             model.appendRow(item)
-        (self.ui.test_listView.setModel(model))
+        self.ui.test_listView.setSpacing(2)
+
+        self.ui.test_listView.setStyleSheet("""
+            QListView::item {
+                border: 1px solid lightgray;
+                padding: 2px;
+            }
+            QListView::item:selected {
+                background-color: lightblue;
+            }
+        """)
+
+        self.ui.test_listView.setModel(model)
 
     def run_selected_test(self):
         selected_indexes = self.ui.test_listView.selectedIndexes()

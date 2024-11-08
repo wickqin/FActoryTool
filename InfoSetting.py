@@ -5,10 +5,7 @@ from setting import Ui_Form
 
 
 def entryIsEmpty(lineEdit):
-    if lineEdit.text().strip() == "":
-        return False
-    else:
-        return True
+    return lineEdit.text().strip() != ""
 
 
 def alert(msg_type, msg):
@@ -24,10 +21,17 @@ class SettingWindow(QWidget):
         super().__init__()
         self.setting_ui = Ui_Form()
         self.setting_ui.setupUi(self)
+        self.setting_ui.psEdit.setFocus()
         self.setTabOrder(self.setting_ui.psEdit, self.setting_ui.lineEdit)
         self.setTabOrder(self.setting_ui.lineEdit, self.setting_ui.fxEdit)
         self.setTabOrder(self.setting_ui.fxEdit, self.setting_ui.pnEdit)
         self.setTabOrder(self.setting_ui.pnEdit, self.setting_ui.okButton)
+
+        self.setting_ui.psEdit.returnPressed.connect(self.setting_ui.lineEdit.setFocus)
+        self.setting_ui.lineEdit.returnPressed.connect(self.setting_ui.fxEdit.setFocus)
+        self.setting_ui.fxEdit.returnPressed.connect(self.setting_ui.pnEdit.setFocus)
+        self.setting_ui.pnEdit.returnPressed.connect(self.setting_ui.okButton.setFocus)
+
         self.file_name = "TestInfo.dat"
         self.initData = {}
         self.setting_ui.okButton.clicked.connect(self.saveGeometry)
@@ -47,13 +51,19 @@ class SettingWindow(QWidget):
             (self.setting_ui.pnEdit, "PN")
         ]
         for line_edit, key in controls_to_check:
-            if entryIsEmpty(line_edit):
-                value = line_edit.text().strip()
-                self.initData[key] = value.upper()
-            else:
+            if not entryIsEmpty(line_edit):
                 alert("Warning", f"请输入{key}")
                 line_edit.setFocus()
                 return
+            value = line_edit.text().strip()
+            if len(value) == line_edit.maxLength():
+                self.initData[key] = value.upper()
+            else:
+                alert("Warning", f"请检查{key}输入")
+                line_edit.setFocus()
+                return
+        with open("InfoPass.dat", 'w') as f:
+            f.write("OK")
         try:
             with open(self.file_name, 'w') as f:
                 for key, value in self.initData.items():
@@ -88,6 +98,8 @@ class SettingWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    SettingWindow = SettingWindow()
-    SettingWindow.show()
+    setting_window = SettingWindow()
+    setting_window.show()
+    if os.path.exists('InfoPass.dat'):
+        os.remove('InfoPass.dat')
     sys.exit(app.exec_())
